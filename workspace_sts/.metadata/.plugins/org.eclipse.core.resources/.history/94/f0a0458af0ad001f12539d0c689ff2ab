@@ -1,0 +1,5 @@
+package chapter05.config;
+
+public class Beans {
+
+}

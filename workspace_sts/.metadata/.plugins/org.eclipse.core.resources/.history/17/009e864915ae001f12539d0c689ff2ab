@@ -1,0 +1,14 @@
+package chapter06;
+
+import java.util.List;
+
+public class MemberServiceImpl implements MemberService {
+	@Autowired
+	private MemberDAO dao;
+	
+	@Override
+	public List<MemberVO> list() {
+		
+	}
+
+}

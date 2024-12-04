@@ -1,0 +1,10 @@
+package chapter08;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface StudentMapper {
+	List<StudentVO> list(StudentVO vo);
+	int count(studentVO vo);
+	int insert(studentVO vo);
+}

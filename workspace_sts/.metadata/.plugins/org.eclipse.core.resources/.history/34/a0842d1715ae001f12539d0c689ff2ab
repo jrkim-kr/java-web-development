@@ -1,0 +1,6 @@
+package chapter06;
+
+public interface MemberService {
+	List<MemberVO> list();
+
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace를 student로 설정하여 DAO에서 SQL 찾아 실행 -->
+<mapper namespace="student">
+
+    <!-- [1] ResultMap 정의 - StudentVO와 DB 컬럼 매핑 -->
+    <resultMap type="chapter07.StudentVO" id="svo">
+        <!-- grade 컬럼을 VO의 year 속성으로 매핑 -->
+        <result column="grade" property="year" />
+    </resultMap>
+
+    <!-- [2] 공통 검색 조건 SQL 정의 -->
+    <sql id="whereSql">
+        <where>
+            <!-- 검색어가 있는 경우 -->
+            <if test="searchWord != null and searchWord != ''">
+                <!-- 전체 검색인 경우 -->
+                <if test="searchType == 'all'">
+                    id LIKE '%${searchWord}%' OR name LIKE '%${searchWord}%'
+                </if>
+                <!-- 특정 필드 검색인 경우 -->
+                <if test="searchType != 'all'">
+                    ${searchType} LIKE '%${searchWord}%'
+                </if>
+            </if>
+            
+            <!-- 학년 검색 -->
+            <if test="searchGrade > 0">
+                AND grade = #{searchGrade}
+            </if>
+            
+            <!-- 전공 검색 -->
+            <if test="searchMajor != null">
+                AND major1 IN
+                <!-- 선택된 전공들을 IN절로 구성 -->
+                <foreach collection="searchMajor" item="m" 
+                         open="(" close=")" separator=",">
+                    #{m}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <!-- [3] 학생 목록 조회 SQL -->
+    <select id="list" parameterType="chapter07.StudentVO"
+            resultType="chapter07.StudentVO">
+        SELECT
+            student.studno, 
+            student.id, 
+            student.name, 
+            student.grade,
+            <!-- 서브쿼리로 교수 이름 조회 -->
+            (SELECT name FROM professor 
+             WHERE no = student.profno) profname
+        FROM student
+        <!-- 공통 검색 조건 포함 -->
+        <include refid="whereSql" />
+    </select>
+
+    <!-- [4] 학생 수 조회 SQL -->
+    <select id="count" parameterType="chapter07.StudentVO"
+            resultType="int">
+        SELECT COUNT(*) FROM student
+        <include refid="whereSql" />
+    </select>
+
+    <!-- [5] 학생 등록 SQL -->
+    <insert id="insert" parameterType="chapter07.StudentVO">
+        INSERT INTO student (id, name, grade, jumin)
+        VALUES (#{id}, #{name}, #{grade}, #{jumin})
+        <!-- 자동 생성된 학번을 VO에 설정 -->
+        <selectKey order="AFTER" keyProperty="studno"
+                   resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- [6] 취미 등록 SQL -->
+    <insert id="insertHobby" parameterType="chapter07.HobbyVO">
+        INSERT INTO hobby (studno, name)
+        VALUES (#{studno}, #{name})
+    </insert>
+
+</mapper>

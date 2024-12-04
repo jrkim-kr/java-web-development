@@ -1,0 +1,10 @@
+package chapter06;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class MemberDAO {
+	// SqlSessionTemplate 주입
+	@Autowired
+	private SqlSessionTemplate sst;
+}

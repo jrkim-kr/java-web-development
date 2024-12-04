@@ -1,0 +1,38 @@
+package chapter06;
+// 설정 파일
+
+import javax.sql.DataSource;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan (basePackages = "chapter04")
+public class MvcConfig implements WebMvcConfigurer {
+	// 뷰리졸버
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		registry.jsp("/WEB-INF/views/", ".jsp");
+	}
+	
+	// HikariCP
+	@Bean
+	public DataSource dataSource()	{
+		DataSource dataSource = new HikariDataSource();
+		dataSource.setDriverClassName("oracle.jsbc.OracleDriver");
+		dataSource.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:xe");
+		dataSource.setUsername("testuser");
+		dataSource.setPassword("test1234");
+		return dataSource;
+	}
+	
+	// MyBatis
+	
+}

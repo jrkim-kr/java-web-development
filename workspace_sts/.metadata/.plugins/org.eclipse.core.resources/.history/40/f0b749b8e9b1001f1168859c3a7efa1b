@@ -1,0 +1,76 @@
+package chapter10;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+/*================================================
+ * [2] 서비스 구현 클래스
+ *================================================*/
+@Service                                // ★ 스프링 서비스 컴포넌트 선언
+public class StudentServiceImpl implements StudentService {
+    
+    @Autowired                          
+    private StudentMapper mapper;
+
+    /*------------------------------------------------
+     * [3] 학생 목록 조회 메서드 구현
+     *------------------------------------------------*/
+    @Override
+    public Map<String, Object> list(StudentVO vo) {
+        // → 학생 목록을 조회하여 리스트에 저장
+        List<StudentVO> list = mapper.list(vo);
+        
+        // → 결과를 담을 Map 객체 생성
+        Map<String, Object> map = new HashMap<>();
+        
+        // → 조회된 학생 목록을 Map에 저장
+        map.put("list", list);
+        
+        // → 전체 학생 수를 Map에 저장
+        map.put("count", mapper.count(vo));
+        
+        // → 결과 Map 반환
+        return map;
+    }
+
+    /*------------------------------------------------
+     * [4] 학생 정보 등록 메서드 구현
+     *------------------------------------------------*/
+    @Override
+    public void insert(StudentVO vo) {
+        // → 입력된 학생 정보 출력 (디버깅용)
+        System.out.println(vo);
+        
+        // → 학생 기본 정보 등록
+        mapper.insert(vo);
+        
+        // → 등록 후 생성된 학번 확인 (디버깅용)
+        System.out.println(vo);
+
+        // → 학생의 취미 정보 등록
+        for (String hobby : vo.getHobbyName()) {
+            // → 각 취미별로 VO 객체 생성
+            HobbyVO hvo = new HobbyVO();
+            
+            // → 학번 설정 (새로 생성된 학번 사용)
+            hvo.setStudno(vo.getStudno());
+            
+            // → 취미명 설정
+            hvo.setName(hobby);
+            
+            // → 취미 정보 등록
+            mapper.insertHobby(hvo);
+        }
+    }
+
+	@Override
+	public StudentVO view(int studno) {
+		// TODO Auto-generated method stub
+		return mapper.view(studno);
+	}
+}

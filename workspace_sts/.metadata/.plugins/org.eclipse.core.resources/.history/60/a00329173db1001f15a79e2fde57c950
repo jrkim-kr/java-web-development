@@ -1,0 +1,5 @@
+package chapter08;
+@Mapper
+public interface StudentMapper {
+
+}

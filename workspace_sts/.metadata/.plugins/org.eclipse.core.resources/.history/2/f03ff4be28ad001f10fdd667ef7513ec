@@ -1,0 +1,10 @@
+package chapter04;
+// 설정 파일
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableWebMvc
+public class MvcConfig {
+	
+}

@@ -1,0 +1,6 @@
+package chapter06;
+
+@Controller
+public class MemberController {
+
+}

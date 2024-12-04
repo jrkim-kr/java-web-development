@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+	<!-- 회원 목록 -->
+	<select id="list" resultType="chapter07.StudentVO">
+		SELECT s.studno, s.name, s.id, s.grade, s.jumin, s.birthday, s.tel, s.height, s.weight, s.major1, s.major2, s.profno, p.name AS profname FROM student s
+		JOIN professor p ON s.profno = p.no
+		<where>
+			<if test="searchWord != null and searchWord != ''">
+				<if test="searchType == 'all'">
+					id LIKE '%${searchWord}%' OR name LIKE '%${searchWord}%'
+				</if>
+				<if test="searchType != 'all'">
+					${searchType} LIKE '%${searchWord}%'
+				</if>
+			</if>
+		</where>
+	</select>
+
+</mapper>

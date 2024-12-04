@@ -1,0 +1,5 @@
+package chapter05.execute;
+
+public interface CalculatorImpl extends Calculator {
+
+}

@@ -1,0 +1,5 @@
+package chapter07;
+@Data
+public class StudentVO {
+
+}

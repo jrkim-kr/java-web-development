@@ -1,0 +1,57 @@
+package chapter07;
+
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+@Configuration  // 스프링 설정 클래스임을 명시
+@EnableWebMvc   // Spring MVC 활성화
+@ComponentScan(basePackages = { "chapter07" }) // chapter07 패키지의 컴포넌트들을 스캔
+public class MvcConfig implements WebMvcConfigurer {
+    
+    // JSP 뷰 리졸버 설정 - view 파일의 위치와 확장자 지정
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/views/", ".jsp");
+    }
+
+    // 데이터베이스 연결 설정
+    @Bean
+    public DataSource dataSource() {
+        HikariDataSource dataSource = new HikariDataSource();
+        // MariaDB 드라이버와 연결 정보 설정
+        dataSource.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+        dataSource.setJdbcUrl("jdbc:log4jdbc:mariadb://localhost:3306/test");
+        dataSource.setUsername("testuser");
+        dataSource.setPassword("test1234");
+        return dataSource;
+    }
+
+    // MyBatis SQL 세션 팩토리 설정
+    @Bean
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean ssf = new SqlSessionFactoryBean();
+        ssf.setDataSource(dataSource()); // 데이터소스 주입
+        // mapper XML 파일 위치 설정
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        ssf.setMapperLocations(resolver.getResources("classpath:/mapper/**/*.xml"));
+        return ssf.getObject();
+    }
+
+    // SQL 실행을 위한 템플릿 객체 생성
+    @Bean
+    public SqlSessionTemplate sst() throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory());
+    }
+}

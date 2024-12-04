@@ -1,0 +1,14 @@
+package chapter06.emp;
+
+import java.sql.Date;
+
+import lombok.Data;
+
+@Data
+public class MemberVO {
+	private int empno;
+	private String ename;
+	private String job;
+	private int mgr;
+	private Date joindate;
+}

@@ -1,0 +1,88 @@
+<!-- ================================================
+* [2] write.jsp (학생 등록 폼)
+*================================================ -->
+
+<!-- [1] JSP 기본 설정 --> 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- → 한글 처리를 위한 UTF-8 인코딩 설정 --> 
+
+<!-- [2] JavaScript 폼 검증 함수 -->
+<script>
+   function fn_sendMember() {
+       // → 폼 객체와 입력값 가져오기
+       var frmMember = document.frmMember;
+       var id = frmMember.id.value;
+       var name = frmMember.name.value;
+
+       // → 아이디 필수 입력 검사
+       if (id.trim() == '') {
+           alert('아이디는 필수입니다.');
+           document.querySelector("input[name='id']").focus();
+           return;
+       }
+
+       // → 이름 필수 입력 검사
+       if (name.length == 0 || name == '') {
+           alert('이름은 필수입니다.');
+           return;
+       }
+
+       // → 검증 통과 시 폼 제출
+ 
+       frmMember.submit();                // 폼 제출
+   }
+</script>
+
+<body>
+<!-- [3] HTML 폼 구조 -->
+<form name="frmMember"  method="post" action="regist.do" enctype="multipart/form-data">
+   <table>
+       <!-- → 테이블 헤더 --> 
+       <tr><th colspan="2">회원 가입창</th></tr>
+       
+       <!-- → 아이디 입력 --> 
+       <tr>
+           <td>아이디</td>
+           <td><input type="text" name="id"></td>
+       </tr>
+       
+       <!-- → 학년 입력 --> 
+       <tr>
+           <td>학년</td>
+           <td><input type="text" name="grade"></td>
+       </tr>
+       
+       <!-- → 이름 입력 --> 
+       <tr>
+           <td>이름</td>
+           <td><input type="text" name="name"></td>
+       </tr>
+       
+       <!-- → 주민번호 입력 --> 
+       <tr>
+           <td>주민번호</td>
+           <td><input type="text" name="jumin"></td>
+       </tr>
+       
+       <!-- → 취미 선택 (체크박스) --> 
+       <tr>
+           <td>취미</td>
+           <td>
+               <input type="checkbox" name="hobbyName" value="영화">영화
+               <input type="checkbox" name="hobbyName" value="독서">독서 
+               <input type="checkbox" name="hobbyName" value="게임">게임
+           </td>
+       </tr>
+       <tr>
+       		<td>첨부파일</td>
+       		<td>
+       </tr>
+   </table>
+
+   <!-- [4] 제출 버튼 --> 
+   <!-- → 가입하기 버튼: JavaScript 검증 함수 호출 --> 
+   <input type="button" value="가입하기" onclick="fn_sendMember()">
+   <!-- → 초기화 버튼: 모든 입력값 리셋 -->
+   <input type="reset" value="다시 입력">
+</form>
+</body>

@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원 정보 출력</title>
+</head>
+<body>
+	<h1 style="text-align: center">회원 정보 출력</h1>
+
+	<table border=1 width=800 align=center>
+		<tr align=center bgcolor="#FFFF66">
+			<td>EMPNO</td>
+			<td>ENAME</td>
+			<td>JOB</td>
+			<td>MGR</td>
+			<td>HIREDATE</td>
+			<td>SAL</td>
+			<td>COMM</td>
+			<td>DEPTNO</td>
+		</tr>
+		<c:forEach var="vo" items="${list }">
+			<tr>
+				<td>${vo.empno }</td>
+				<td>${vo.ename }</td>
+				<td>${vo.job }</td>
+				<td>${vo.mgr }</td>
+				<td>${vo.hiredate }</td>
+				<td>${vo.sal }</td>
+				<td>${vo.comm }</td>
+				<td>${vo.deptno }</td>
+			</tr>
+		</c:forEach>
+	</table>
+	<br>
+	<form method="get" action="list.do" align=center>
+		<select name="searchType">
+			<option value="all">전체</option>
+			<option value="id"
+				<c:if test="${param.searchType == 'empno'}">selected</c:if>>EMPNO</option>
+			<option value="name"
+				<c:if test="${param.searchType == 'ename'}">selected</c:if>>ENAME</option>
+		</select> 
+		<%-- 검색어 : 
+		<input type="text" name="searchWord" value="${param.searchWord }"><br> 
+		<input type="submit" value="조회하기"> --%>
+	</form>
+</body>
+</html>

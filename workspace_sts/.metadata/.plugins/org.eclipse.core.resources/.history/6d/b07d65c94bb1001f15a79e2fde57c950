@@ -1,0 +1,109 @@
+package chapter09;
+
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+/*================================================
+ * [1] 클래스 수준 설정
+ *================================================*/
+@Configuration                   // ★ 스프링 설정 클래스임을 선언
+@EnableWebMvc                   // ★ 스프링 MVC 기능 활성화
+@ComponentScan(basePackages = { "chapter09" })  // ★ chapter09 패키지 내 컴포넌트 자동 스캔
+public class MvcConfig implements WebMvcConfigurer {
+
+    /*------------------------------------------------
+     * [2] 뷰 리졸버 설정
+     *------------------------------------------------*/
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        // → JSP 파일의 기본 경로와 확장자 설정
+        // → 예: "home" -> "/WEB-INF/views/home.jsp"로 변환
+        registry.jsp("/WEB-INF/views/", ".jsp");
+    }
+
+    /*------------------------------------------------
+     * [3] 데이터베이스 연결 설정
+     *------------------------------------------------*/
+    @Bean
+    public DataSource dataSource() {
+        // → HikariCP 커넥션 풀 객체 생성
+        HikariDataSource dataSource = new HikariDataSource();
+
+        // → DB 연결 정보 설정
+        dataSource.setDriverClassName(          // → SQL 로깅이 가능한 드라이버 사용
+            "net.sf.log4jdbc.sql.jdbcapi.DriverSpy");  
+        dataSource.setJdbcUrl(                 // → MariaDB 서버 접속 주소
+            "jdbc:log4jdbc:mariadb://localhost:3306/test");    
+        dataSource.setUsername("testuser");    // → DB 접속 아이디
+        dataSource.setPassword("test1234");    // → DB 접속 비밀번호
+
+        return dataSource;                     // → 설정 완료된 데이터소스 반환
+    }
+
+    /*------------------------------------------------
+     * [4] MyBatis 설정
+     *------------------------------------------------*/
+    @Bean
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        // → MyBatis-Spring 연동을 위한 팩토리 빈 생성
+        SqlSessionFactoryBean ssf = new SqlSessionFactoryBean();
+        
+        // → 위에서 만든 데이터소스 주입
+        ssf.setDataSource(dataSource());
+        
+        // → 매퍼 XML 파일 위치 설정을 위한 객체 생성
+        PathMatchingResourcePatternResolver resolver = 
+            new PathMatchingResourcePatternResolver();
+        
+        // → 모든 매퍼 XML 파일 등록
+        ssf.setMapperLocations(
+            resolver.getResources("classpath:/mapper/**/*.xml"));
+        
+        return ssf.getObject();               // → 설정 완료된 팩토리 객체 반환
+    }
+
+    /*------------------------------------------------
+     * [5] MyBatis 템플릿 설정
+     *------------------------------------------------*/
+//    @Bean
+//    public SqlSessionTemplate sst() throws Exception {
+//        // → 실제 SQL 실행을 담당할 템플릿 객체 생성 및 반환
+//        // → 스레드 안전하며 트랜잭션 처리도 자동으로 수행
+//        return new SqlSessionTemplate(sqlSessionFactory());
+//    }
+    
+    // 트랜젝션내니저 빈 등록
+    @Bean
+    public TransactionManager tm()	{
+    	DataSourceTransactionManager dtm = new DataSourceTransactionManager(dataSource());
+    	return dtm;
+    }
+    
+    
+    // 인터셉터 빈 등록
+    @Bean
+    public LoginInterceptor interception()	 {
+    	return new LoginInterceptor();
+    }
+    
+    // 설정
+    @Override
+    public void addInterceptors (InterceptorRegistry registry) {
+    	registry.addInterceptor(interception());
+    }
+    
+}

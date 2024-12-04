@@ -1,0 +1,13 @@
+package chapter09;
+
+import lombok.Data;
+
+/*================================================
+* [2] HobbyVO (취미 정보를 담는 Value Object)
+*================================================*/
+@Data
+public class HobbyVO {
+   private int no;        // 취미 번호
+   private int studno;    // 학생 번호
+   private String name;   // 취미명
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<!-- 회원 목록 -->
+	<select id="memberList" resultType="chapter06.MemberVO">
+		SELECT * FROM t_member
+	</select>
+
+	<!-- 회원 조회 -->
+	<select id="memberOne" resultType="chapter06.MemberVO"
+		parameterType="String">
+		SELECT * FROM t_member WHERE id = #{id}     <!-- preparedStatement 방식 -->
+		<!-- SELECT * FROM t_member WHERE id = '${id}'; -->    <!-- statement 방식 -->
+	</select>
+	
+	<!-- 회원등록 -->
+	<insert id="memberInsert">
+	
+	</insert>
+</mapper>

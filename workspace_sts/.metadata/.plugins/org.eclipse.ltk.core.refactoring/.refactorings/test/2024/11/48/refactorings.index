@@ -1,0 +1,22 @@
+1732592705369	Delete element
+1732592716229	Delete element
+1732592854188	Rename resource 'beans.xsml.xml'
+1732670664861	Copy compilation unit
+1732670672839	Rename type 'MemberServiceImpl2'
+1732691547628	Delete element
+1732757229391	Rename type 'MVCConfig'
+1732762468206	Copy file
+1732762471359	Copy file
+1732843084319	Delete element
+1732843426952	Delete element
+1732843816420	Copy compilation unit
+1732850437077	Copy compilation unit
+1732862821061	Copy file
+1732862844558	Copy compilation units
+1732863195945	Copy file
+1732863645557	Rename type 'MemberController'
+1732863689519	Rename type 'MemberDAO'
+1732863698030	Rename type 'MemberService'
+1732863706164	Rename type 'MemberServiceImpl'
+1732863713387	Rename type 'MemberVO'
+1732863750047	Move 'emp.jsp' to 'emp'

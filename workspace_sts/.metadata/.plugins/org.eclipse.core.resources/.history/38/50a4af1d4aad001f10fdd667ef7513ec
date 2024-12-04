@@ -1,0 +1,8 @@
+package chapter04;
+
+@Getter
+@Setter
+@ToString
+public class MemberVO {
+
+}

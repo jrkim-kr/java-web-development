@@ -1,0 +1,14 @@
+package chapter05.execute;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+
+@Aspect
+public class Timer {
+	@Pointcut("execution(public * chapter05.execute..*(..))")
+	private void target () {};
+	
+	public Object invoke() {
+		
+	}
+}

@@ -1,0 +1,8 @@
+package chapter05.execute;
+
+public interface CalculatorImpl extends Calculator {
+	@Override
+	public long factorial(int num) {
+		long start = System.nanoTime()	;
+	}
+}

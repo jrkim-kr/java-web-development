@@ -1,0 +1,13 @@
+package chapter06;
+
+import java.util.List;
+
+public class MemberServiceImpl implements MemberService {
+
+	@Override
+	public List<MemberVO> list() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

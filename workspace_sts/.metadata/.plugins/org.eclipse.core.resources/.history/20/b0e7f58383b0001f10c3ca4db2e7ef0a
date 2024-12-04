@@ -1,0 +1,28 @@
+package chapter07;
+
+import java.sql.Date;
+
+import lombok.Data;
+
+@Data
+public class StudentVO {
+	private int studno;
+	private String name;
+	private String id;
+	private int grade;
+	private String jumin;
+	private Date birthday;
+	private String tel;
+	private int height;
+	private int weight; 
+	private int major1;
+	private int major2;
+	private int profno;
+	private int profno;
+	private String profname;
+	private int profid;
+	
+	// 검색 조건
+	private String searchType;
+	private String searchWord;
+}

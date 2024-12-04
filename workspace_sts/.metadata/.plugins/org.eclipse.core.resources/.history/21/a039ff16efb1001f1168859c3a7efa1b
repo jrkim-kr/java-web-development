@@ -1,0 +1,6 @@
+package chapter10.common;
+
+@Controller
+public class DownloadController {
+	
+}

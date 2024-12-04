@@ -1,0 +1,30 @@
+package chapter07;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class StudentServiceImpl implements StudentService {
+	@Autowired
+	private StudentDAO dao;
+	
+	@Override
+	public Map<String, Object> list(StudentVO vo) {
+		List<StudentVO> list = dao.list(vo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("count", dao.count(vo));
+		return map;
+	}
+
+	@Override
+	public void insert(StudentVO vo) {
+		System.out.println(vo);
+		
+	}
+
+}

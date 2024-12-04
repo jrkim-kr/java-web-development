@@ -1,0 +1,11 @@
+package chapter05.execute;
+
+public class CalculatorImpl2 implements Calculator {
+
+	@Override
+	public long factorial(int num) {
+		
+		return result;
+	}
+
+}
